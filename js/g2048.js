@@ -96,7 +96,7 @@ $(function(){
         moveEndY = e.changedTouches[0].pageY;
         X = moveEndX - startX;
         Y = moveEndY - startY;
-        isScrolling = Math.abs(X) < Math.abs(Y) ? 1:0;    //isScrolling涓�1鏃讹紝琛ㄧず绾靛悜婊戝姩锛�0涓烘í鍚戞粦鍔�
+        isScrolling = Math.abs(X) < Math.abs(Y) ? 1:0;    //isScrolling
         if ( isScrolling < 1 && X < 0 ) {
             cellsMove(left);
         }else if ( isScrolling > 0 && Y < 0 ) {
@@ -128,7 +128,6 @@ $(function(){
     	let lr = '';
     	let arr2 = ['0','1','2','3'];
     	let lt = true;
-    	let yidong = false;
     	if(direction==='left'||direction==='up'){
     		arr = ['1','2','3','4'];
     		lt = true;
@@ -151,7 +150,6 @@ $(function(){
 					for(var n=f;n<3;n++){
 						$('.'+tb+[i]+'.'+lr+arr[arr2[n]]).html($('.'+tb+[i]+'.'+lr+arr[arr2[n]-0+1]).html())
 						if($('.'+tb+[i]+'.'+lr+arr[arr2[n]-0+1]).html()){
-							yidong = true;
 						}
 //						console.log(arr2[n],'arr3[n]')
 					}
@@ -180,7 +178,6 @@ $(function(){
 	    		}
 	    		// 第二个等于第三个的时候
     		}else if($('.'+tb+[i]+'.'+lr+arr[1]).html()==$('.'+tb+[i]+'.'+lr+arr[2]).html()&&!!$('.'+tb+[i]+'.'+lr+arr[1]).html()){
-    			yidong = true;
 	    		$('.'+tb+[i]+'.'+lr+arr[1]).html($('.'+tb+[i]+'.'+lr+arr[1]).html()-0+($('.'+tb+[i]+'.'+lr+arr[2]).html()-0));
 	    		$('.'+tb+[i]+'.'+lr+arr[2]).html($('.'+tb+[i]+'.'+lr+arr[3]).html());
 	    		$('.'+tb+[i]+'.'+lr+arr[3]).html('');
@@ -192,28 +189,21 @@ $(function(){
 	    		}
 	    		
     		}else if($('.'+tb+[i]+'.'+lr+arr[2]).html()==$('.'+tb+[i]+'.'+lr+arr[3]).html()&&$('.'+tb+[i]+'.'+lr+arr[2]).html()){
-    			yidong = true;
 	    		$('.'+tb+[i]+'.'+lr+arr[2]).html($('.'+tb+[i]+'.'+lr+arr[2]).html()-0+($('.'+tb+[i]+'.'+lr+arr[3]).html()-0));
 	    		$('.'+tb+[i]+'.'+lr+arr[3]).html('');
     		}
 		}
-		if(yidong){
-			refreshPR();
-//	        setTimeout(refreshPR,100);// 50毫秒后运行
-		}else{
-			if(checkGame()){
-	    		alert('游戏结束');
-	    	}
-		}
+		refreshPR();// 获取下一个随机数或者游戏结束
     }
 
     //是否结束游戏ameover
-    function checkGame(){
+    function checkGame(){// 判断有空着的格子就能继续
         for(var i=1;i<=16;i++){
             if($('.cell').eq(i).html()==""){
                 return false
             }
         }
+        // 判断相邻的格子有没有相同值。只要有相同值就能移动
         for (let i = 1; i <= 4; i++) {
         	if(
         		$('.row'+i+'.col1').html()==$('.row'+i+'.col2').html() ||
